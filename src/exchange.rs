@@ -233,7 +233,7 @@ impl Exchange {
     /// Get the request results in binary format for a list of known request IDs
     /// 
     /// Note: this function will block until all requests have either completed 
-    /// successfull or otherwise failed
+    /// successfully or otherwise failed
     pub fn get_results(&self, request_ids: Vec<u128>) -> Vec<&Result<(RequestType, Vec<u8>), String>> {
         let mut results = Vec::new();
         for id in request_ids {
