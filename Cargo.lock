@@ -79,8 +79,6 @@ version = "0.1.0"
 dependencies = [
  "bincode",
  "core_affinity",
- "num_cpus",
- "serde",
 ]
 
 [[package]]

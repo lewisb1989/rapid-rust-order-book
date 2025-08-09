@@ -10,12 +10,8 @@ use crate::request::{
 };
 
 use std::collections::HashMap;
-use serde::{
-    Deserialize, 
-    Serialize
-};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug)]
 pub struct BestQuote {
     pub best_bid_price: u64,
     pub best_ask_price: u64,
