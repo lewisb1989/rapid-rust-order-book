@@ -8,22 +8,72 @@ use crate::{
     }, 
     request::{
         CancelOrderRequest, 
+        ListMarketRequest, 
+        RequestType, 
         SubmitOrderRequest
     }
 };
 
 fn list_markets(exchange: &mut Exchange) {
-    let res = exchange.list_market("BTCUSDT", 10_001, 1);
+    let res = exchange.list_market(ListMarketRequest {
+        symbol: "BTCUSDT".to_string(),
+        max_price: 10_001,
+        min_price: 1,
+        settlement_asset: "USDT".to_string(),
+        signature: "".to_string(),
+        nonce: 0,
+        public_key: "".to_string()
+    });
     println!("listed market: {:?}", res);
-    let res = exchange.list_market("ETHUSDT", 10_001, 1);
+    let res = exchange.list_market(ListMarketRequest {
+        symbol: "ETHUSDT".to_string(),
+        max_price: 10_001,
+        min_price: 1,
+        settlement_asset: "USDT".to_string(),
+        signature: "".to_string(),
+        nonce: 0,
+        public_key: "".to_string()
+    });
     println!("listed market: {:?}", res);
-    let res = exchange.list_market("SOLUSDT", 10_001, 1);
+    let res = exchange.list_market(ListMarketRequest {
+        symbol: "SOLUSDT".to_string(),
+        max_price: 10_001,
+        min_price: 1,
+        settlement_asset: "USDT".to_string(),
+        signature: "".to_string(),
+        nonce: 0,
+        public_key: "".to_string()
+    });
     println!("listed market: {:?}", res);
-    let res = exchange.list_market("LINKUSDT", 10_001, 1);
+    let res = exchange.list_market(ListMarketRequest {
+        symbol: "LINKUSDT".to_string(),
+        max_price: 10_001,
+        min_price: 1,
+        settlement_asset: "USDT".to_string(),
+        signature: "".to_string(),
+        nonce: 0,
+        public_key: "".to_string()
+    });
     println!("listed market: {:?}", res);
-    let res = exchange.list_market("AAVEUSDT", 10_001, 1);
+    let res = exchange.list_market(ListMarketRequest {
+        symbol: "AAVEUSDT".to_string(),
+        max_price: 10_001,
+        min_price: 1,
+        signature: "".to_string(),
+        nonce: 0,
+        public_key: "".to_string(),
+        settlement_asset: "USDT".to_string()
+    });
     println!("listed market: {:?}", res);
-    let res = exchange.list_market("OPUSDT", 10_001, 1);
+    let res = exchange.list_market(ListMarketRequest {
+        symbol: "OPUSDT".to_string(),
+        max_price: 10_001,
+        min_price: 1,
+        settlement_asset: "USDT".to_string(),
+        signature: "".to_string(),
+        nonce: 0,
+        public_key: "".to_string()
+    });
     println!("listed market: {:?}", res);
 }
 
@@ -41,12 +91,15 @@ fn add_limit_orders(exchange: &mut Exchange) {
                 price, 
                 size: 1,
                 side,
-                order_type: OrderType::Limit
+                order_type: OrderType::Limit,
+                signature: String::from(""),
+                nonce: 0,
+                public_key: String::from("")
             });
             request_ids.push(res.unwrap());
         }
     }
-    let results = exchange.get_results(request_ids);
+    let results = exchange.get_results(RequestType::SubmitOrder, request_ids);
     let end = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_nanos();
     println!("total results = {}", results.len());
     let duration = end - start;
@@ -63,12 +116,18 @@ fn cancel_limit_orders(exchange: &mut Exchange) {
     for market in &markets {
         let orders = exchange.get_orders_by_symbol(market.get_symbol()).expect("cannot get orders").clone();
         for order in orders {
-            let res = exchange.cancel_order(CancelOrderRequest { symbol: market.get_symbol().clone(), id: order.get_id() });
+            let res = exchange.cancel_order(CancelOrderRequest { 
+                symbol: market.get_symbol().clone(), 
+                id: order.get_id(),
+                signature: String::from(""),
+                nonce: 0,
+                public_key: String::from("")
+            });
             request_ids.push(res.unwrap());
             total_cancellations += 1;
         }
     }
-    let results = exchange.get_results(request_ids);
+    let results = exchange.get_results(RequestType::CancelOrder, request_ids);
     let end = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_nanos();
     println!("total results = {}", results.len());
     let duration = end - start;
@@ -90,12 +149,15 @@ fn do_market_orders(exchange: &mut Exchange) {
                 price: 0, 
                 size: 2,
                 side,
-                order_type: OrderType::Market
+                order_type: OrderType::Market,
+                signature: String::from(""),
+                nonce: 0,
+                public_key: String::from("")
             });
             request_ids.push(res.unwrap());
         }
     }
-    let results = exchange.get_results(request_ids);
+    let results = exchange.get_results(RequestType::SubmitOrder, request_ids);
     let end = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_nanos();
     println!("total results = {}", results.len());
     let duration = end - start;

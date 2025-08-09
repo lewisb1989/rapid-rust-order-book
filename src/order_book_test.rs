@@ -14,27 +14,27 @@ mod tests {
         let market = Market::new("BTCUSD", 10_000, 1);
         let mut order_book = OrderBook::new(market.clone());
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 101, size: 1, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 101, size: 1, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 100, size: 1, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 100, size: 1, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 104, size: 1, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 104, size: 1, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 102, size: 1, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 102, size: 1, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 103, size: 1, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 103, size: 1, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let bids = order_book.get_side_of_book(Side::Buy);
@@ -65,11 +65,11 @@ mod tests {
         let min_price = market.get_min_price();
         let mut order_book = OrderBook::new(market.clone());
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 99, size: 2, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 99, size: 2, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let bids = order_book.get_side_of_book(Side::Buy);
@@ -90,11 +90,11 @@ mod tests {
         let max_price = market.get_max_price();
         let mut order_book = OrderBook::new(market.clone());
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 99, size: 2, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 99, size: 2, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let bids = order_book.get_side_of_book(Side::Buy);
@@ -114,19 +114,19 @@ mod tests {
         let market = Market::new("BTCUSD", 10_000, 1);
         let mut order_book = OrderBook::new(market.clone());
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 99, size: 2, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 99, size: 2, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 100, size: 2, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 100, size: 2, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 105, size: 10, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 105, size: 10, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 100, size: 10, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 100, size: 10, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let bids = order_book.get_side_of_book(Side::Buy);
@@ -148,19 +148,19 @@ mod tests {
         let market = Market::new("BTCUSD", 10_000, 1);
         let mut order_book = OrderBook::new(market.clone());
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 105, size: 2, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 105, size: 2, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 103, size: 2, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 103, size: 2, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 95, size: 10, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 95, size: 10, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 103, size: 10, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 103, size: 10, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let bids = order_book.get_side_of_book(Side::Buy);
@@ -183,15 +183,15 @@ mod tests {
         let min_price = market.get_min_price();
         let mut order_book = OrderBook::new(market.clone());
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 102, size: 1, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 102, size: 1, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let bids = order_book.get_side_of_book(Side::Buy);
@@ -212,15 +212,15 @@ mod tests {
         let max_price = market.get_max_price();
         let mut order_book = OrderBook::new(market.clone());
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 95, size: 1, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 95, size: 1, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 99, size: 1, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let bids = order_book.get_side_of_book(Side::Buy);
@@ -240,15 +240,15 @@ mod tests {
         let market = Market::new("BTCUSD", 10_000, 1);
         let mut order_book = OrderBook::new(market.clone());
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 99, size: 10, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 99, size: 10, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 100, size: 10, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 100, size: 10, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 100, size: 1, order_type: OrderType::Market, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 100, size: 1, order_type: OrderType::Market, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let bids = order_book.get_side_of_book(Side::Buy);
@@ -270,15 +270,15 @@ mod tests {
         let market = Market::new("BTCUSD", 10_000, 1);
         let mut order_book = OrderBook::new(market.clone());
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 99, size: 10, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 99, size: 10, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 100, size: 10, order_type: OrderType::Limit, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 100, size: 10, order_type: OrderType::Limit, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 100, size: 1, order_type: OrderType::Market, side: Side::Sell 
+            symbol: market.get_symbol().to_string(), price: 100, size: 1, order_type: OrderType::Market, side: Side::Sell, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let bids = order_book.get_side_of_book(Side::Buy);
@@ -300,7 +300,7 @@ mod tests {
         let market = Market::new("BTCUSD", 10_000, 50);
         let mut order_book = OrderBook::new(market.clone());
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 10, size: 10, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 10, size: 10, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_err(), true);
         assert_eq!(res.unwrap_err(), "order price is below min for market");
@@ -312,7 +312,7 @@ mod tests {
         let market = Market::new("BTCUSD", 10_000, 1);
         let mut order_book = OrderBook::new(market.clone());
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 1000000000, size: 10, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 1000000000, size: 10, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_err(), true);
         assert_eq!(res.unwrap_err(), "order price is above max for market");
@@ -323,13 +323,13 @@ mod tests {
         let market = Market::new("BTCUSD", 10_000, 1);
         let mut order_book = OrderBook::new(market.clone());
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 100, size: 100, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 100, size: 100, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);
         let bids = order_book.get_side_of_book(Side::Buy);
         assert_eq!(bids.len(), 1);
         let order_id = res.unwrap();
-        let res = order_book.cancel_order(&mut CancelOrderRequest { symbol: market.get_symbol().to_string(), id: order_id });
+        let res = order_book.cancel_order(&mut CancelOrderRequest { symbol: market.get_symbol().to_string(), id: order_id, signature: "".to_string(), nonce: 0, public_key: "".to_string() });
         assert_eq!(res.is_ok(), true);
         let bids = order_book.get_side_of_book(Side::Buy);
         assert_eq!(bids.len(), 0);
@@ -340,10 +340,10 @@ mod tests {
         let market = Market::new("BTCUSD", 10_000, 1);
         let mut order_book = OrderBook::new(market.clone());
         let res = order_book.submit_order(&mut SubmitOrderRequest { 
-            symbol: market.get_symbol().to_string(), price: 100, size: 100, order_type: OrderType::Limit, side: Side::Buy 
+            symbol: market.get_symbol().to_string(), price: 100, size: 100, order_type: OrderType::Limit, side: Side::Buy, signature: "".to_string(), nonce: 0, public_key: "".to_string()
         });
         assert_eq!(res.is_ok(), true);   
-        let res = order_book.cancel_order(&mut CancelOrderRequest{symbol: market.get_symbol().to_string(), id: 100 });
+        let res = order_book.cancel_order(&mut CancelOrderRequest{symbol: market.get_symbol().to_string(), id: 100, signature: "".to_string(), nonce: 0, public_key: "".to_string() });
         assert_eq!(res.is_err(), true);
         assert_eq!(res.unwrap_err(), "order not found");
     }
