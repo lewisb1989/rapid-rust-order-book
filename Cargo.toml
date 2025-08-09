@@ -1,0 +1,8 @@
+[package]
+name = "rust-order-book-2"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bincode = { version = "2.0.1", features = ["serde"] }
+core_affinity = "0.8.3"
