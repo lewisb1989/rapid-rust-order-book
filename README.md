@@ -1,5 +1,5 @@
 # Rapid Rust Order Book
-Rust implementation of an extremely fast limit order-book
+Rust implementation of an extremely fast limit order-book.
 
 ## Build
 
