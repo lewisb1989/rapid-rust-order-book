@@ -1,8 +1,8 @@
 mod demo;
 mod exchange;
 mod market;
-mod order_book;
 mod order;
+mod order_book;
 mod price_level;
 mod request;
 mod state;

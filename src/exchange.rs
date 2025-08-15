@@ -1,34 +1,19 @@
+use bincode::{Decode, Encode};
 use std::{
-    collections::HashMap, 
+    collections::HashMap,
     sync::{
-        mpsc::{
-            self, 
-            Sender
-        }, 
-        Arc, 
-        RwLock 
-    }, 
-    thread
-};
-use bincode::{
-    Decode, 
-    Encode
+        Arc, RwLock,
+        mpsc::{self, Sender},
+    },
+    thread,
 };
 
 use crate::{
-    market::Market, 
-    order::Order, 
-    order_book::{
-        BestQuote, 
-        OrderBook
-    }, 
-    request::{
-        CancelOrderRequest, 
-        MarketRequest, 
-        RequestType, 
-        SignedRequest, 
-        SubmitOrderRequest
-    }, state::State
+    market::Market,
+    order::Order,
+    order_book::{BestQuote, OrderBook},
+    request::{CancelOrderRequest, MarketRequest, RequestType, SignedRequest, SubmitOrderRequest},
+    state::State,
 };
 
 pub struct Exchange {
@@ -36,11 +21,10 @@ pub struct Exchange {
     channel_by_symbol: HashMap<String, usize>,
     last_req_id: u128,
     markets_lock: Arc<RwLock<bool>>,
-    state: Arc<State>
+    state: Arc<State>,
 }
 
 impl Exchange {
-    
     /// Creates a new exchange
     pub fn new() -> Self {
         println!("initializing the exchange...");
@@ -53,7 +37,7 @@ impl Exchange {
             channels,
             channel_by_symbol: HashMap::new(),
             last_req_id: 0,
-            markets_lock
+            markets_lock,
         }
     }
 
@@ -61,7 +45,7 @@ impl Exchange {
     fn setup_worker_threads(
         channels: &mut Vec<Sender<SignedRequest>>,
         state: &Arc<State>,
-        markets_lock: &Arc<RwLock<bool>>
+        markets_lock: &Arc<RwLock<bool>>,
     ) {
         // divide total CPUs by 2 to get physical cores
         let core_ids = core_affinity::get_core_ids().unwrap();
@@ -87,17 +71,14 @@ impl Exchange {
     }
 
     /// Handle a signed request when it is received by a worker thread
-    fn handle_signed_request(
-        state: &Arc<State>,
-        request: SignedRequest
-    ) {
+    fn handle_signed_request(state: &Arc<State>, request: SignedRequest) {
         let request_id = request.id;
         match request.request_type {
             RequestType::SubmitOrder => {
                 let mut request: SubmitOrderRequest = Self::decode_payload(request.payload);
                 let result = Self::handle_submit_order(state, &mut request);
                 state.save_request_result(request_id, result);
-            },
+            }
             RequestType::CancelOrder => {
                 let mut request: CancelOrderRequest = Self::decode_payload(request.payload);
                 let result = Self::handle_cancel_order(state, &mut request);
@@ -108,17 +89,15 @@ impl Exchange {
 
     /// Decode binary payload into request object
     fn decode_payload<T: Decode<()>>(payload: Vec<u8>) -> T {
-        let (request, _): (T, usize) = bincode::decode_from_slice(
-            &payload, 
-            bincode::config::standard()
-        ).unwrap();
+        let (request, _): (T, usize) =
+            bincode::decode_from_slice(&payload, bincode::config::standard()).unwrap();
         request
     }
 
     /// Handle new order submission requests
     fn handle_submit_order(
         state: &Arc<State>,
-        request: &mut SubmitOrderRequest
+        request: &mut SubmitOrderRequest,
     ) -> Result<(RequestType, Vec<u8>), String> {
         let order_book = state.get_order_book_by_symbol(request.get_symbol())?;
         let id = order_book.submit_order(request)?;
@@ -129,7 +108,7 @@ impl Exchange {
     /// Handle order cancellation requests
     fn handle_cancel_order(
         state: &Arc<State>,
-        request: &mut CancelOrderRequest
+        request: &mut CancelOrderRequest,
     ) -> Result<(RequestType, Vec<u8>), String> {
         let order_book = state.get_order_book_by_symbol(request.get_symbol())?;
         let result = order_book.cancel_order(request)?;
@@ -138,15 +117,15 @@ impl Exchange {
     }
 
     /// Get the channel ID for the given symbol
-    /// 
+    ///
     /// Each market submits requests exclusively to a single channel (aka worker thread)
-    /// 
+    ///
     /// Multiple markets can be processed by a single worker thread, if there are more
     /// listed markets than physical cores
     fn get_channel_id(&self, symbol: &str) -> Result<usize, String> {
         match self.channel_by_symbol.get(symbol) {
             Some(id) => Ok(*id),
-            None => Err("market not found".to_string())
+            None => Err("market not found".to_string()),
         }
     }
 
@@ -154,7 +133,7 @@ impl Exchange {
     fn get_channel(&self, id: usize) -> Result<&Sender<SignedRequest>, String> {
         match self.channels.get(id) {
             Some(sender) => Ok(sender),
-            None => Err("market not found".to_string())
+            None => Err("market not found".to_string()),
         }
     }
 
@@ -162,13 +141,17 @@ impl Exchange {
     fn build_payload<T: Encode>(&self, request: T) -> Result<Vec<u8>, String> {
         match bincode::encode_to_vec(request, bincode::config::standard()) {
             Ok(res) => Ok(res),
-            Err(err) => Err(format!("cannot build payload: {}", err))
+            Err(err) => Err(format!("cannot build payload: {}", err)),
         }
     }
 
-    /// Submit incoming requests for async processing, by sending them to the 
+    /// Submit incoming requests for async processing, by sending them to the
     /// channel allocated to the specified market
-    fn handle_request<T: Encode + MarketRequest>(&mut self, request: T, request_type: RequestType) -> Result<u128, String> {
+    fn handle_request<T: Encode + MarketRequest>(
+        &mut self,
+        request: T,
+        request_type: RequestType,
+    ) -> Result<u128, String> {
         if self.last_req_id == (self.state.get_request_results().len() as u128) - 1 {
             self.last_req_id = 0;
         }
@@ -176,14 +159,14 @@ impl Exchange {
         let channel_id = self.get_channel_id(request.get_symbol())?;
         let sender = self.get_channel(channel_id)?;
         let payload = self.build_payload(request)?;
-        let result = sender.send(SignedRequest { 
+        let result = sender.send(SignedRequest {
             id: self.last_req_id,
             request_type,
-            payload
+            payload,
         });
         match result {
             Ok(_) => Ok(self.last_req_id),
-            Err(err) => Err(err.to_string())
+            Err(err) => Err(err.to_string()),
         }
     }
 
@@ -193,25 +176,29 @@ impl Exchange {
     }
 
     /// List a new market
-    /// 
+    ///
     /// Note: since this function modifies the size of the markets hashmap, it must
     /// lock the internal state until the market is added to prevent the matching
     /// engine from modifying memory addresses that have been de-allocated
-    pub fn list_market(&mut self, 
-        symbol: &str, 
-        max_price: u64, 
-        min_price: u64, 
+    pub fn list_market(
+        &mut self,
+        symbol: &str,
+        max_price: u64,
+        min_price: u64,
     ) -> Result<&Market, String> {
         let markets = self.state.get_markets();
         if markets.get(symbol).is_none() {
             let market = Market::new(symbol, max_price, min_price);
             let channel_id = markets.len() % self.channels.len();
-            self.channel_by_symbol.insert(symbol.to_string(), channel_id);
+            self.channel_by_symbol
+                .insert(symbol.to_string(), channel_id);
             markets.insert(symbol.to_string(), market.clone());
             // we need exclusive write access here as this operation allocates heap memory
             let lock = self.markets_lock.write();
             // create new order book
-            self.state.get_order_books().insert(symbol.to_string(), OrderBook::new(market));
+            self.state
+                .get_order_books()
+                .insert(symbol.to_string(), OrderBook::new(market));
             // drop the lock now that we're done
             drop(lock);
             Ok(markets.get(symbol).unwrap())
@@ -231,10 +218,13 @@ impl Exchange {
     }
 
     /// Get the request results in binary format for a list of known request IDs
-    /// 
-    /// Note: this function will block until all requests have either completed 
+    ///
+    /// Note: this function will block until all requests have either completed
     /// successfully or otherwise failed
-    pub fn get_results(&self, request_ids: Vec<u128>) -> Vec<&Result<(RequestType, Vec<u8>), String>> {
+    pub fn get_results(
+        &self,
+        request_ids: Vec<u128>,
+    ) -> Vec<&Result<(RequestType, Vec<u8>), String>> {
         let mut results = Vec::new();
         for id in request_ids {
             loop {
@@ -258,7 +248,7 @@ impl Exchange {
             best_bid_price,
             best_bid_size,
             best_ask_price,
-            best_ask_size
+            best_ask_size,
         })
     }
 

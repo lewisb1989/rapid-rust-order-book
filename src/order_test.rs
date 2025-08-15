@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
 
-    use crate::order::{Order, Side, OrderType, OrderStatus};
+    use crate::order::{Order, OrderStatus, OrderType, Side};
 
     #[test]
     fn test_new() {
@@ -18,7 +18,8 @@ mod tests {
         let order = Order::new(100, 1, Side::Buy, OrderStatus::Open, OrderType::Limit);
         let bytes = bincode::encode_to_vec(order, bincode::config::standard());
         assert_eq!(bytes.is_ok(), true);
-        let (decoded_order, _): (Order, usize) = bincode::decode_from_slice(&bytes.unwrap(), bincode::config::standard()).unwrap();
+        let (decoded_order, _): (Order, usize) =
+            bincode::decode_from_slice(&bytes.unwrap(), bincode::config::standard()).unwrap();
         assert_eq!(decoded_order, order);
     }
 }

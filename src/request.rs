@@ -5,7 +5,7 @@ use crate::order::{OrderType, Side};
 #[derive(Debug)]
 pub enum RequestType {
     SubmitOrder,
-    CancelOrder
+    CancelOrder,
 }
 
 pub trait MarketRequest {
@@ -16,7 +16,7 @@ pub trait MarketRequest {
 pub struct SignedRequest {
     pub id: u128,
     pub request_type: RequestType,
-    pub payload: Vec<u8>
+    pub payload: Vec<u8>,
 }
 
 #[derive(Debug, Encode, Decode, Default)]
@@ -25,7 +25,7 @@ pub struct SubmitOrderRequest {
     pub price: u64,
     pub size: u64,
     pub side: Side,
-    pub order_type: OrderType
+    pub order_type: OrderType,
 }
 
 impl MarketRequest for SubmitOrderRequest {
@@ -37,7 +37,7 @@ impl MarketRequest for SubmitOrderRequest {
 #[derive(Debug, Encode, Decode)]
 pub struct CancelOrderRequest {
     pub symbol: String,
-    pub id: u64
+    pub id: u64,
 }
 
 impl MarketRequest for CancelOrderRequest {

@@ -6,20 +6,15 @@ pub struct Market {
 }
 
 impl Market {
-
     /// Creates a new market
-    pub fn new(
-        symbol: &str,
-        max_price: u64,
-        min_price: u64,
-    ) -> Self {
+    pub fn new(symbol: &str, max_price: u64, min_price: u64) -> Self {
         Self {
             symbol: symbol.to_owned(),
             max_price,
-            min_price
+            min_price,
         }
     }
-    
+
     /// Get market symbol
     pub fn get_symbol(&self) -> &String {
         &self.symbol

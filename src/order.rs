@@ -2,21 +2,21 @@ use bincode::{Decode, Encode};
 
 #[derive(PartialEq, Eq, Clone, Copy, Debug, Encode, Decode)]
 pub enum OrderStatus {
-    Open
+    Open,
 }
 
 #[derive(PartialEq, Eq, Clone, Copy, Debug, Default, Encode, Decode)]
 pub enum OrderType {
     #[default]
     Limit,
-    Market
+    Market,
 }
 
 #[derive(PartialEq, Eq, Clone, Copy, Debug, Default, Encode, Decode)]
 pub enum Side {
     #[default]
     Buy,
-    Sell
+    Sell,
 }
 
 #[derive(Encode, Decode, Clone, Copy, Debug, PartialEq, Eq)]
@@ -31,15 +31,8 @@ pub struct Order {
 }
 
 impl Order {
-    
     /// Creates a new order with specified values
-    pub fn new(
-        price: u64, 
-        size: u64, 
-        side: Side, 
-        status: OrderStatus, 
-        typ: OrderType
-    ) -> Self {
+    pub fn new(price: u64, size: u64, side: Side, status: OrderStatus, typ: OrderType) -> Self {
         Self {
             id: 0,
             price,
@@ -47,7 +40,7 @@ impl Order {
             side,
             size,
             status,
-            typ
+            typ,
         }
     }
 
@@ -55,12 +48,12 @@ impl Order {
     pub fn get_id(&self) -> u64 {
         self.id
     }
-    
+
     /// Returns the order price
     pub fn get_price(&self) -> u64 {
         self.price
     }
-    
+
     /// Returns the unfilled order size
     pub fn get_remaining(&self) -> u64 {
         self.remaining
@@ -70,12 +63,12 @@ impl Order {
     pub fn get_size(&self) -> u64 {
         self.size
     }
-    
+
     /// Sets the order price
     pub fn set_price(&mut self, price: u64) {
         self.price = price;
     }
-    
+
     /// Sets the remaining size
     pub fn set_remaining(&mut self, remaining: u64) {
         self.remaining = remaining;
@@ -100,7 +93,7 @@ impl Order {
     pub fn set_status(&mut self, status: OrderStatus) {
         self.status = status;
     }
-    
+
     /// Sets the id
     pub fn set_id(&mut self, id: u64) {
         self.id = id;

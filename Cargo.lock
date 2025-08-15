@@ -74,7 +74,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust-order-book-2"
+name = "rapid-rust-order-book"
 version = "0.1.0"
 dependencies = [
  "bincode",

@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests {
 
+    use crate::order::{OrderType, Side};
     use crate::price_level::PriceLevel;
-    use crate::order::{Side, OrderType};
 
     #[test]
     fn test_new() {
@@ -24,9 +24,9 @@ mod tests {
     fn test_add_order_fails_when_level_full() {
         let mut price_level = PriceLevel::new(100);
         for i in 0..201 {
-            price_level.add_order(100, i+1, Side::Buy, OrderType::Limit, i+1);
+            price_level.add_order(100, i + 1, Side::Buy, OrderType::Limit, i + 1);
             assert_eq!(price_level.get_price(), 100);
-            assert_eq!(price_level.get_size(), i+1);
+            assert_eq!(price_level.get_size(), i + 1);
         }
     }
 
@@ -41,9 +41,9 @@ mod tests {
     fn test_remove_order() {
         let mut price_level = PriceLevel::new(100);
         for i in 0..3 {
-            price_level.add_order(100, 1, Side::Buy, OrderType::Limit, i+1);
+            price_level.add_order(100, 1, Side::Buy, OrderType::Limit, i + 1);
             assert_eq!(price_level.get_price(), 100);
-            assert_eq!(price_level.get_size(), i+1);
+            assert_eq!(price_level.get_size(), i + 1);
         }
         assert_eq!(price_level.get_size(), 3);
         assert_eq!(price_level.get_orders().get(0).unwrap().get_price(), 100);
@@ -68,5 +68,4 @@ mod tests {
         assert_eq!(price_level.get_size(), 0);
         assert_eq!(price_level.get_orders().len(), 0);
     }
-
 }
