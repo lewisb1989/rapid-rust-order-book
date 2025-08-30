@@ -47,7 +47,7 @@ impl Exchange {
         state: &Arc<State>,
         markets_lock: &Arc<RwLock<bool>>,
     ) {
-        // divide total CPUs by 2 to get physical cores
+        // total CPUs
         let core_ids = core_affinity::get_core_ids().unwrap();
         // for each core, spawn a worker thread
         for core_id in core_ids {
